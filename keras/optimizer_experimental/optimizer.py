@@ -175,6 +175,14 @@ class _BaseOptimizer(tf.Module):
     """
     return self._iterations
 
+  @iterations.setter
+  def iterations(self, variable):
+    if getattr(self, "_built", False):
+      raise RuntimeError("Cannot set `iterations` to a new Variable after "
+                         "the Optimizer weights have been created. Here it is "
+                         f"attempting to set `iterations` to {variable}.")
+    self._iterations = variable
+
   @property
   def learning_rate(self):
     if not hasattr(self, "_learning_rate") or self._learning_rate is None:
